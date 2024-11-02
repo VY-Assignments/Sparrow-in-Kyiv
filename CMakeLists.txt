@@ -5,4 +5,12 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(asmt-5-game-engine-koalla05
         main.cpp
+        Game.cpp
+        Game.h
+        Pipe.cpp
+        Pipe.h
+        Bird.cpp
+        Bird.h
+        Score.h
+        Score.cpp
 )
