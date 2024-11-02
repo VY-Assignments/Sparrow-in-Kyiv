@@ -1,11 +1,13 @@
 #include "Leaderboard.h"
-
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <utility>
 
-void LeaderBoard::display() {
+LeaderBoard::LeaderBoard() : isDisplayed(false), button("Back", {200, 50}, {100, 100}, isDisplayed) {}
+
+std::vector<std::pair<std::string, int>> LeaderBoard::display() {
     loadScores();
     std::vector<std::pair<std::string, int>> bestScores(scores.begin(), scores.end());
 
@@ -13,10 +15,7 @@ void LeaderBoard::display() {
         return a.second > b.second;
     });
 
-    std::cout << "Top 10 Scores:\n";
-    for (size_t i = 0; i < std::min(bestScores.size(), size_t(10)); ++i) {
-        std::cout << bestScores[i].first << ": " << bestScores[i].second << std::endl;
-    }
+    return bestScores;
 }
 
 void LeaderBoard::getScoreByName(std::string name) {

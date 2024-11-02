@@ -1,22 +1,24 @@
 #pragma once
-#include <iostream>
 
 #include "Leaderboard.h"
+#include "Button.h"
+#include <vector>
 
 class Menu {
+    LeaderBoard& board;
 public:
-    int chooseDifficulty() {
-        int level;
-        std::cout << "Plase choose difficulty: 1, 2, or 3" << std::endl;
-        std::cin >> level;
-        return level;
+    bool isDisplayed;
+    int& difficulty;
+    std::vector<Button*> buttons;
+    Menu(LeaderBoard& board, int& level):isDisplayed(true), board(board), difficulty(level){
+        buttons.push_back(new DifficultyButton("Easy", {200, 50}, {100, 100}, difficulty));
+        buttons.push_back(new DifficultyButton("Medium", {200, 50}, {100, 160}, difficulty));
+        buttons.push_back(new DifficultyButton("Hard", {200, 50}, {100, 220}, difficulty));
+        buttons.push_back(new LeaderBoardButton("Leaderboard", {200, 50}, {100, 280}, board.isDisplayed));
     }
-    void viewScoreBoard(LeaderBoard& leaderboard) {
-        char answer;
-        std::cout << "Do you want to view leader board?" << std::endl;
-        std::cin >> answer;
-        if (answer == 'y') {
-            leaderboard.display();
+    ~Menu() {
+        for (Button* button : buttons) {
+            delete button;
         }
     }
 };

@@ -3,27 +3,20 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
-#include <vector>
-
 #include "EndScreen.h"
-#include "Menu.h"
 
-Game::Game(LeaderBoard& inBoard) {
+Game::Game(LeaderBoard& inBoard, bool isDisplayed): difficulty(0), board(inBoard), isDisplayed(isDisplayed) {
     bird = new Bird(10, 10);
-    board = inBoard;
-}
-void Game::start() {
-    std::cout << "Starting Game" << std::endl;
-    gameLoop();
 }
 std::string Game::getName() {
     std::string name;
-    std::cout << "Enter your name: ";
-    std::cin >> name;
+    //std::cout << "Enter your name: ";
+    //std::cin >> name;
+    name = "Alla";
     return name;
 }
 
-void Game::gameLoop() {
+void Game::gameLoop(Renderer& render) {
     using namespace std::chrono;
     auto lastTime = steady_clock::now();
     bird -> x = 10;
@@ -37,7 +30,7 @@ void Game::gameLoop() {
         float deltaTime = duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
 
-        handleInput();
+        handleInput(render);
         update(deltaTime);
         draw();
 
@@ -121,30 +114,30 @@ void Game::draw() {
     score.display();
 }
 
-void Game::handleInput() {
-    char input;
-    std::cout << "Press 'f' to flap, or 'q' to quit: ";
-    std::cin >> input;
-
-    if (input == 'f') {
-        bird->flap();
-        std::cout << "Flap" << std::endl;
-    } else if (input == 'q') {
-        gameRunning = false;
-        std::cout << "Quitting game..." << std::endl;
-    } else {
-        std::cout << "Invalid command." << std::endl;
-    }
-
-}
+// void Game::handleInput() {
+//     char input;
+//     std::cout << "Press 'f' to flap, or 'q' to quit: ";
+//     std::cin >> input;
+//
+//     if (input == 'f') {
+//         bird->flap();
+//         std::cout << "Flap" << std::endl;
+//     } else if (input == 'q') {
+//         gameRunning = false;
+//         std::cout << "Quitting game..." << std::endl;
+//     } else {
+//         std::cout << "Invalid command." << std::endl;
+//     }
+//
+// }
 void Game::setDifficulty(int level) {
     difficulty = level;
 }
 void Game::showMenu() {
-    Menu menu;
-    menu.viewScoreBoard(board);
-    setDifficulty(menu.chooseDifficulty());
-    start();
+    // Menu menu;
+    // menu.viewScoreBoard(board);
+    // setDifficulty(menu.chooseDifficulty());
+    // start();
 }
 void Game::endGame(std::string name) {
     board.add(name, score.getScore());
@@ -161,10 +154,29 @@ void Game::endGame(std::string name) {
     }
     else if (option == 'r') {
         gameRunning = true;
-        start();
+        //gameLoop();
     }
     else {
         std::cout << "Wrong option" << std::endl;
+    }
+}
+
+void Game::handleInput(Renderer& render) {
+    sf::Event event;
+    if (render.pollEvent(event)) {
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Space) {
+                bird->flap();
+                std::cout << "Flap" << std::endl;
+            }
+            else if (event.key.code == sf::Keyboard::Q) {
+                gameRunning = false; // Quit the game
+                std::cout << "Quitting game..." << std::endl;
+            }
+            else {
+                std::cout << "Invalid command." << std::endl;
+            }
+        }
     }
 }
 
