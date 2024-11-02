@@ -1,16 +1,14 @@
 #include "Game.h"
+#include "Menu.h"
+#include "Leaderboard.h"
 
-class EndScreen {
-    int score = 0;
-public:
-    void show();
-    void goMenu();
-    void endGame();
-    void restartGame();
-};
 
 int main() {
-    Game game;
+    LeaderBoard board;
+    Menu menu;
+    menu.viewScoreBoard(board);
+    Game game(board);
+    game.setDifficulty(menu.chooseDifficulty());
     game.start();
     return 0;
 }

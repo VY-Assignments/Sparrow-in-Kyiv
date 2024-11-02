@@ -13,4 +13,10 @@ add_executable(asmt-5-game-engine-koalla05
         Bird.h
         Score.h
         Score.cpp
+        Menu.h
+        Menu.cpp
+        Leaderboard.h
+        EndScreen.h
+        EndScreen.cpp
+        Leaderboard.cpp
 )

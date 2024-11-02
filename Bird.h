@@ -12,4 +12,5 @@ public:
     void flap();
     void updatePosition(float deltaTime);
     bool checkColissions(Pipe& pipe);
+    bool checkColisionWithBorders();
 };

@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include "Leaderboard.h"
 #include "Bird.h"
 #include "Game.h"
 #include "Pipe.h"
@@ -15,8 +17,9 @@ class Game {
     Score score;
     bool gameRunning = true;
     int pipeSpawnCounter = 0;
+    LeaderBoard board;
 public:
-    Game();
+    Game(LeaderBoard& board);
     void start();
     void gameLoop();
     void update(float deltaTime);
@@ -24,7 +27,8 @@ public:
     void updateScore();
     void draw();
     void handleInput();
-    void setDifficulty(int& level);
+    void setDifficulty(int level);
     void showMenu();
-    void endGame();
+    void endGame(std::string name);
+    std::string getName();
 };

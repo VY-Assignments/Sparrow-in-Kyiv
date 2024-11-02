@@ -5,4 +5,6 @@ class Score {
 public:
     void increaseScore();
     void display() const;
+    void reset();
+    int getScore();
 };

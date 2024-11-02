@@ -5,16 +5,32 @@
 #include <thread>
 #include <vector>
 
-Game::Game() {
+#include "EndScreen.h"
+#include "Menu.h"
+
+Game::Game(LeaderBoard& inBoard) {
     bird = new Bird(10, 10);
+    board = inBoard;
 }
 void Game::start() {
     std::cout << "Starting Game" << std::endl;
     gameLoop();
 }
+std::string Game::getName() {
+    std::string name;
+    std::cout << "Enter your name: ";
+    std::cin >> name;
+    return name;
+}
+
 void Game::gameLoop() {
     using namespace std::chrono;
     auto lastTime = steady_clock::now();
+    bird -> x = 10;
+    bird -> y = 10;
+    pipes.clear();
+    score.reset();
+    std::string name = getName();
 
     while (gameRunning) {
         auto currentTime = steady_clock::now();
@@ -27,7 +43,7 @@ void Game::gameLoop() {
 
         std::this_thread::sleep_for(milliseconds(100));
     }
-    endGame();
+    endGame(name);
 }
 void Game::update(float deltaTime) {
     bird->updatePosition(deltaTime);
@@ -58,6 +74,7 @@ bool Game::checkCollisions() {
             return true;
         }
     }
+    if (bird -> checkColisionWithBorders()) return true;
     return false;
 }
 void Game::updateScore() {
@@ -66,10 +83,18 @@ void Game::updateScore() {
 void Game::draw() {
     system("cls");
     std::cout << "Flappy Bird Game" << std::endl;
-    for (int i = 0; i < maxWidth; i++) {
-        for (int j = 0; j < maxHeight; j++) {
-            if (bird -> y == i && bird -> x == j) {
-                std::cout << "B"; // Bird
+
+    for (int j = 0; j < maxWidth + 2; j++) {
+        std::cout << "#";
+    }
+    std::cout << std::endl;
+
+    for (int i = 0; i < maxHeight; i++) {
+        std::cout << "#";
+
+        for (int j = 0; j < maxWidth; j++) {
+            if (bird->y == i && bird->x == j) {
+                std::cout << "B";
             } else {
                 bool isPipe = false;
                 for (const auto& pipe : pipes) {
@@ -84,10 +109,18 @@ void Game::draw() {
                 }
             }
         }
+
+        std::cout << "#";
         std::cout << std::endl;
     }
+
+    for (int j = 0; j < maxWidth + 2; j++) {
+        std::cout << "#";
+    }
+    std::cout << std::endl;
     score.display();
 }
+
 void Game::handleInput() {
     char input;
     std::cout << "Press 'f' to flap, or 'q' to quit: ";
@@ -104,13 +137,34 @@ void Game::handleInput() {
     }
 
 }
-void Game::setDifficulty(int& level) {
-
+void Game::setDifficulty(int level) {
+    difficulty = level;
 }
 void Game::showMenu() {
-
+    Menu menu;
+    menu.viewScoreBoard(board);
+    setDifficulty(menu.chooseDifficulty());
+    start();
 }
-void Game::endGame() {
-    std::cout << "Game Over" << std::endl;
+void Game::endGame(std::string name) {
+    board.add(name, score.getScore());
+    std::cout << "Game is over" << std::endl;
+    std::cout << "Your total score is " << score.getScore() << std::endl;
+    EndScreen endScreen;
+    char option = endScreen.show();
+    if (option == 'e') {
+        exit(0);
+    }
+    else if (option == 'm') {
+        gameRunning = true;
+        showMenu();
+    }
+    else if (option == 'r') {
+        gameRunning = true;
+        start();
+    }
+    else {
+        std::cout << "Wrong option" << std::endl;
+    }
 }
 
