@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <SFML/Graphics.hpp>
+enum class GameState;
 
 class Button {
 protected:
@@ -17,24 +18,25 @@ public:
 };
 
 class LeaderBoardButton : public Button {
-    bool& isDisplayed;
+    GameState& state;
 public:
-    LeaderBoardButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, bool& isDisplayed);
+    LeaderBoardButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state);
     void onClick() override;
 };
 
 class BackButton : public Button {
-    bool& isDisplayed;
+    GameState& state;
 public:
-    BackButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, bool& isDisplayed);
+    BackButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state);
     void onClick() override;
 };
 
 
 
 class DifficultyButton : public Button {
+    GameState& state;
     int& difficulty;
 public:
-    DifficultyButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, int& difficulty);
+    DifficultyButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, int& difficulty, GameState& state);
     void onClick() override;
 };

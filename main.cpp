@@ -1,36 +1,45 @@
+#include <iostream>
+
 #include "Game.h"
 #include "Menu.h"
 #include "Leaderboard.h"
 #include "Renderer.h"
 
-int main() {
-    std::string title = "Sparrow in Kyiv";
-    bool isDisplayed = false;
-    int difficulty = 0;
-    LeaderBoard board;
-    Menu menu(board, difficulty);
-    Renderer renderer(500, 500, title, board, menu);
-    Game game(board, isDisplayed);
 
-    renderer.renderMenu();
+int main() {
+    GameState currentState = GameState::Menu;
+    std::string title = "Sparrow in Kyiv";
+    int difficulty = 0;
+    LeaderBoard board(currentState);
+    Menu menu(difficulty, currentState);
+    Renderer renderer(700, 900, title, board);
+    Game game(board);
+
+
     while (renderer.isOpen()) {
         sf::Event event;
         while (renderer.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 renderer.close();
             }
-            renderer.handleEvents(event);
-        }
-        if (board.isDisplayed) {
-            renderer.renderLeaderboard();
-        } else if (difficulty != 0) {
-            game.setDifficulty(difficulty);
-            game.gameLoop(renderer);
-            renderer.renderGame(game);
-
-        }
-        else {
-            renderer.renderMenu();
+            switch (currentState) {
+                case GameState::Menu:
+                    renderer.renderMenu(menu.buttons);
+                    renderer.handleEventsMenu(event, menu.buttons);
+                    break;
+                case GameState::LeaderBoard:
+                    renderer.renderLeaderboard(board);
+                    renderer.handleEventsLeaderBoard(event, board.button);
+                    break;
+                case GameState::Game:
+                    renderer.renderGame(game.bird, game.pipes, game.score);
+                    renderer.handeEventsGame(event, game.bird);
+                    if (!game.gameRunning) {
+                        game.setDifficulty(difficulty);
+                    }
+                    game.gameLoop();
+                    break;
+            }
         }
     }
 

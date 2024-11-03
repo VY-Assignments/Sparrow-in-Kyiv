@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-LeaderBoard::LeaderBoard() : isDisplayed(false), button("Back", {200, 50}, {100, 100}, isDisplayed) {}
+LeaderBoard::LeaderBoard(GameState& state) : isDisplayed(false), state(state), button("Back", {200, 50}, {100, 100}, state) {}
 
 std::vector<std::pair<std::string, int>> LeaderBoard::display() {
     loadScores();

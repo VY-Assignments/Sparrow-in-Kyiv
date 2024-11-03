@@ -3,13 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Leaderboard.h"
-#include "Menu.h"
+#include "Bird.h"
 #include "Game.h"
-#include "EndScreen.h"
+#include "Pipe.h"
+#include "Score.h"
 
+enum class GameAction { Flap, Exit, None };
 class Renderer {
-    Menu& menu;
-    Game& game;
+
     LeaderBoard& board;
     sf::RenderWindow window;
     sf::Font font;
@@ -21,20 +22,23 @@ class Renderer {
     sf::CircleShape birdShape;
     sf::RectangleShape pipeShape;
 public:
-    Renderer(int width, int height, const std::string &title, LeaderBoard &board, Menu &menu);
+    Renderer(int width, int height, const std::string &title, LeaderBoard &board);
 
     ~Renderer();
 
     void clear();
-    void handleEvents(const sf::Event& event);
-    void renderMenu();
-    void renderGame(Game& game);
-    void renderBorder();
-    void renderBird();
-    void renderPipe();
-    void renderScore();
+    void handleEventsMenu(const sf::Event& event, std::vector<Button*> buttons);
+    void handleEventsLeaderBoard(const sf::Event& event, BackButton buttons);
+    void handeEventsGame(const sf::Event &event, Bird& bird);
+    void renderMenu(std::vector<Button*> buttons);
+    void renderLeaderboard(LeaderBoard& board);
+    void renderGame(Bird& bird, std::vector<Pipe>& pipes, Score& score);
+    // void renderBorder();
+    // void renderBird(const Bird& bird);
+    // void renderPipes(const std::vector<Pipe>& pipes);
+    // void renderScore(const Score& score);
     // void renderEndScreen(Score& score);
-    void renderLeaderboard();
+
 
     bool pollEvent(sf::Event& event);
     bool isOpen() const;

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard& board, Menu& menu): window(sf::VideoMode(width, height), title), game(game), board(board), menu(menu)
+Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard& board): window(sf::VideoMode(width, height), title), board(board)
     {
 
     if (!font.loadFromFile("C:/Windows/Fonts/Arial.ttf")) {
@@ -42,35 +42,43 @@ Renderer::~Renderer() {
 void Renderer::clear() {
     window.clear(sf::Color::White);
 }
-void Renderer::handleEvents(const sf::Event& event) {
+void Renderer::handleEventsMenu(const sf::Event& event, std::vector<Button*> buttons) {
     if (event.type == sf::Event::MouseButtonPressed) {
         if (event.mouseButton.button == sf::Mouse::Left) {
-            for (Button* button : menu.buttons) {
+            for (Button* button : buttons) {
                 if (button->shape.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
                     button->onClick();
                 }
             }
-            if (board.isDisplayed && board.button.shape.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
-                board.button.onClick();
-            }
-        }
-    } else if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Space) {
-            game.bird->flap();
         }
     }
 }
-void Renderer::renderMenu() {
+
+void Renderer::handleEventsLeaderBoard(const sf::Event &event, BackButton button) {
+    if (button.shape.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+        button.onClick();
+    }
+}
+
+void Renderer::handeEventsGame(const sf::Event &event, Bird& bird) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Space) {
+            bird.flap();
+        }
+    }
+}
+
+void Renderer::renderMenu(std::vector<Button*> buttons) {
     clear();
     menuText.setPosition(10, 10);
     window.draw(menuText);
-    for (Button* button : menu.buttons) {
+    for (Button* button : buttons) {
         button->draw(window);
     }
     window.display();
 }
 
-void Renderer::renderLeaderboard() {
+void Renderer::renderLeaderboard(LeaderBoard& board) {
     clear();
     std::vector<std::pair<std::string, int>> scores = board.display();
     for (size_t i = 0; i < scores.size(); ++i) {
@@ -99,41 +107,33 @@ void Renderer::close() {
 }
 
 
-void Renderer::renderGame(Game& game) {
-    // Clear the window with a background color
-    window.clear(sf::Color::Cyan); // Change this to your desired background color
+void Renderer::renderGame(Bird& bird, std::vector<Pipe>& pipes, Score& score) {
+    window.clear(sf::Color::Cyan);
 
-    // Draw the game elements
-    // Example of drawing the bird
-    sf::CircleShape birdShape(10); // Change the radius as needed
-    birdShape.setFillColor(sf::Color::Yellow); // Bird color
-    birdShape.setPosition(game.bird->x * 10, game.bird->y * 10); // Scale position to match your game coordinates
+    // Render bird
+    sf::CircleShape birdShape(10);
+    birdShape.setFillColor(sf::Color::Yellow);
+    birdShape.setPosition(bird.x * 10, bird.y * 10);
     window.draw(birdShape);
 
-    // Draw pipes
-    for (const auto& pipe : game.pipes) {
-        sf::RectangleShape pipeShape(sf::Vector2f(20, (pipe.gap > 0 ? pipe.gap : 0) * 10)); // Width and height of the pipe
-        pipeShape.setFillColor(sf::Color::Green); // Pipe color
-
-        // Position the pipe, adjust for gap
-        pipeShape.setPosition(pipe.x * 10, pipe.y * 10);
+    // Render pipes
+    for (const auto& pipe : pipes) {
+        sf::RectangleShape pipeShape(sf::Vector2f(20, pipe.gap * 10));
+        pipeShape.setFillColor(sf::Color::Green);
+        pipeShape.setPosition(pipe.x * 10, 0);
         window.draw(pipeShape);
+
+        // Render lower part of pipe with gap
+        sf::RectangleShape lowerPipeShape(sf::Vector2f(20, (40 - pipe.gap - pipe.y) * 10));
+        lowerPipeShape.setFillColor(sf::Color::Green);
+        lowerPipeShape.setPosition(pipe.x * 10, (pipe.gap + pipe.y) * 10);
+        window.draw(lowerPipeShape);
     }
 
-    // Draw the score
-    sf::Font font;
-    if (!font.loadFromFile("path/to/font.ttf")) { // Provide a valid font path
-        // Handle font loading error
-    }
-    sf::Text scoreText;
-    scoreText.setFont(font);
-    scoreText.setString("Score: " + std::to_string(game.score.getScore()));
-    scoreText.setCharacterSize(24); // Set the size as needed
-    scoreText.setFillColor(sf::Color::Black); // Score color
-    scoreText.setPosition(10, 10); // Position of the score
+    // Render the score
+    scoreText.setString("Score: " + std::to_string(score.getScore()));
     window.draw(scoreText);
 
-    // Display everything we just drew
     window.display();
 }
 
@@ -184,6 +184,8 @@ void Renderer::renderGame(Game& game) {
 //
 //     window.draw(scoreText);
 // }
+
+
 
 
 

@@ -5,12 +5,13 @@
 #include <utility>
 #include "Button.h"
 
+
 class LeaderBoard {
     std::string filePath = "statistics.txt";
     std::unordered_map<std::string, int> scores;
-
+    GameState& state;
 public:
-    LeaderBoard();
+    LeaderBoard(GameState& state);
     bool isDisplayed;
     BackButton button;
     std::vector<std::pair<std::string, int>> display();

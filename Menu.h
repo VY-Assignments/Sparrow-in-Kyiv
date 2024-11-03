@@ -1,20 +1,24 @@
 #pragma once
-
-#include "Leaderboard.h"
 #include "Button.h"
 #include <vector>
 
+enum class GameState {
+    Menu,
+    LeaderBoard,
+    Game,
+    EndScreen,
+};
+
 class Menu {
-    LeaderBoard& board;
 public:
-    bool isDisplayed;
+    GameState& state;
     int& difficulty;
     std::vector<Button*> buttons;
-    Menu(LeaderBoard& board, int& level):isDisplayed(true), board(board), difficulty(level){
-        buttons.push_back(new DifficultyButton("Easy", {200, 50}, {100, 100}, difficulty));
-        buttons.push_back(new DifficultyButton("Medium", {200, 50}, {100, 160}, difficulty));
-        buttons.push_back(new DifficultyButton("Hard", {200, 50}, {100, 220}, difficulty));
-        buttons.push_back(new LeaderBoardButton("Leaderboard", {200, 50}, {100, 280}, board.isDisplayed));
+    Menu(int& level, GameState& state):difficulty(level), state(state) {
+        buttons.push_back(new DifficultyButton("Easy", {200, 50}, {100, 100}, level, state));
+        buttons.push_back(new DifficultyButton("Medium", {200, 50}, {100, 160}, level, state));
+        buttons.push_back(new DifficultyButton("Hard", {200, 50}, {100, 220}, level, state));
+        buttons.push_back(new LeaderBoardButton("Leaderboard", {200, 50}, {100, 280}, state));
     }
     ~Menu() {
         for (Button* button : buttons) {

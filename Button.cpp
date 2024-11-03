@@ -2,6 +2,9 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "Menu.h"
+enum class GameState;
+
 Button::Button(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position)
     : label(label) {
     shape.setSize(size);
@@ -24,10 +27,11 @@ void Button::draw(sf::RenderWindow& window) {
     window.draw(text);
 }
 
-DifficultyButton::DifficultyButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, int& difficulty)
-    : Button(label, size, position), difficulty(difficulty) {}
+DifficultyButton::DifficultyButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, int& difficulty, GameState& state)
+    : Button(label, size, position), difficulty(difficulty), state(state) {}
 
 void DifficultyButton::onClick() {
+    state = GameState::Game;
     if (label == "Easy") {
         difficulty = 1;
     }
@@ -39,17 +43,18 @@ void DifficultyButton::onClick() {
     }
 }
 
-LeaderBoardButton::LeaderBoardButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, bool& isDisplayed)
-    : Button(label, size, position), isDisplayed(isDisplayed) {}
+LeaderBoardButton::LeaderBoardButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state)
+    : Button(label, size, position), state(state) {}
 
 void LeaderBoardButton::onClick() {
     std::cout << "Leaderboard button clicked. isDisplayed set to true." << std::endl;
-    isDisplayed = true;
+    state = GameState::LeaderBoard;
 }
 
-BackButton::BackButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, bool& isDisplayed)
-    : Button(label, size, position), isDisplayed(isDisplayed) {}
+BackButton::BackButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state)
+    : Button(label, size, position), state(state) {}
 
 void BackButton::onClick() {
-    isDisplayed = false;
+    std::cout << "yes";
+    state = GameState::Menu;
 }

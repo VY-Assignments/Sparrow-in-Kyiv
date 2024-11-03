@@ -5,9 +5,8 @@
 #include <thread>
 #include "EndScreen.h"
 
-Game::Game(LeaderBoard& inBoard, bool isDisplayed): difficulty(0), board(inBoard), isDisplayed(isDisplayed) {
-    bird = new Bird(10, 10);
-}
+Game::Game(LeaderBoard& inBoard): difficulty(0), board(inBoard), bird(Bird(10, 10)) {}
+
 std::string Game::getName() {
     std::string name;
     //std::cout << "Enter your name: ";
@@ -16,11 +15,11 @@ std::string Game::getName() {
     return name;
 }
 
-void Game::gameLoop(Renderer& render) {
+void Game::gameLoop() {
     using namespace std::chrono;
     auto lastTime = steady_clock::now();
-    bird -> x = 10;
-    bird -> y = 10;
+    bird.x = 10;
+    bird.y = 10;
     pipes.clear();
     score.reset();
     std::string name = getName();
@@ -30,16 +29,15 @@ void Game::gameLoop(Renderer& render) {
         float deltaTime = duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
 
-        handleInput(render);
         update(deltaTime);
-        draw();
+
 
         std::this_thread::sleep_for(milliseconds(100));
     }
     endGame(name);
 }
 void Game::update(float deltaTime) {
-    bird->updatePosition(deltaTime);
+    bird.updatePosition(deltaTime);
     for (auto it = pipes.begin(); it != pipes.end();) {
         it -> updatePosition(deltaTime);
         if (it->isOffScreen()) {
@@ -52,7 +50,7 @@ void Game::update(float deltaTime) {
         gameRunning = false;
     }
     else {
-        if (!pipes.empty() && bird->x == pipes.front().x + 1) {
+        if (!pipes.empty() && bird.x == pipes.front().x + 1) {
             updateScore();
         }
     }
@@ -63,73 +61,17 @@ void Game::update(float deltaTime) {
 };
 bool Game::checkCollisions() {
     for (auto& pipe: pipes) {
-        if (bird->checkColissions(pipe)) {
+        if (bird.checkColissions(pipe)) {
             return true;
         }
     }
-    if (bird -> checkColisionWithBorders()) return true;
+    if (bird.checkColisionWithBorders()) return true;
     return false;
 }
 void Game::updateScore() {
     score.increaseScore();
 }
-void Game::draw() {
-    system("cls");
-    std::cout << "Flappy Bird Game" << std::endl;
 
-    for (int j = 0; j < maxWidth + 2; j++) {
-        std::cout << "#";
-    }
-    std::cout << std::endl;
-
-    for (int i = 0; i < maxHeight; i++) {
-        std::cout << "#";
-
-        for (int j = 0; j < maxWidth; j++) {
-            if (bird->y == i && bird->x == j) {
-                std::cout << "B";
-            } else {
-                bool isPipe = false;
-                for (const auto& pipe : pipes) {
-                    if (pipe.x == j && (i < pipe.y || i > pipe.y + pipe.gap)) {
-                        std::cout << "|";
-                        isPipe = true;
-                        break;
-                    }
-                }
-                if (!isPipe) {
-                    std::cout << " ";
-                }
-            }
-        }
-
-        std::cout << "#";
-        std::cout << std::endl;
-    }
-
-    for (int j = 0; j < maxWidth + 2; j++) {
-        std::cout << "#";
-    }
-    std::cout << std::endl;
-    score.display();
-}
-
-// void Game::handleInput() {
-//     char input;
-//     std::cout << "Press 'f' to flap, or 'q' to quit: ";
-//     std::cin >> input;
-//
-//     if (input == 'f') {
-//         bird->flap();
-//         std::cout << "Flap" << std::endl;
-//     } else if (input == 'q') {
-//         gameRunning = false;
-//         std::cout << "Quitting game..." << std::endl;
-//     } else {
-//         std::cout << "Invalid command." << std::endl;
-//     }
-//
-// }
 void Game::setDifficulty(int level) {
     difficulty = level;
 }
@@ -158,25 +100,6 @@ void Game::endGame(std::string name) {
     }
     else {
         std::cout << "Wrong option" << std::endl;
-    }
-}
-
-void Game::handleInput(Renderer& render) {
-    sf::Event event;
-    if (render.pollEvent(event)) {
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Space) {
-                bird->flap();
-                std::cout << "Flap" << std::endl;
-            }
-            else if (event.key.code == sf::Keyboard::Q) {
-                gameRunning = false; // Quit the game
-                std::cout << "Quitting game..." << std::endl;
-            }
-            else {
-                std::cout << "Invalid command." << std::endl;
-            }
-        }
     }
 }
 

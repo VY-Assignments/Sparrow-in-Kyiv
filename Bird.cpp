@@ -7,7 +7,6 @@
 
 void Bird::flap() {
     speed = lift;
-    std::cout << x << y << std::endl;
 }
 bool ::Bird::checkColissions(Pipe &pipe) {
     return pipe.x == x && (pipe.y > y || pipe.y + pipe.gap < y);
