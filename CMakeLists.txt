@@ -27,6 +27,8 @@ add_executable(asmt-5-game-engine-koalla05
         Renderer.h
         Renderer.cpp
         TextField.h
+        PipePool.h
+        PipePool.cpp
 )
 
 target_link_libraries(asmt-5-game-engine-koalla05 sfml-graphics sfml-window sfml-system)

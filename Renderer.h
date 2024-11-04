@@ -14,6 +14,8 @@ class Renderer {
     LeaderBoard& board;
     sf::RenderWindow window;
     sf::Font font;
+    sf::Font font1;
+
     sf::Texture menuTexture;
     sf::Sprite menuSprite;
 

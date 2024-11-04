@@ -8,7 +8,7 @@ class Bird {
     std::vector<sf::Texture> textures;
     sf::Texture texture;
     const int gravity = 1;
-    const int lift = -5;
+    const int lift = -11;
     void loadTextures();
 public:
     sf::Sprite sprite;

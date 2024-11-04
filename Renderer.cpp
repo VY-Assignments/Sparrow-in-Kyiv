@@ -2,8 +2,11 @@
 #include <iostream>
 
 Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard& board): window(sf::VideoMode(width, height), title), board(board){
-    window.setFramerateLimit(40);
-    if (!font.loadFromFile("C:/Windows/Fonts/Arial.ttf")) {
+    window.setFramerateLimit(60);
+    if (!font.loadFromFile("alphabetized cassette tapes.ttf")) {
+        throw std::runtime_error("Failed to load font");
+    }
+    if (!font1.loadFromFile("brushed.ttf")) {
         throw std::runtime_error("Failed to load font");
     }
 
@@ -47,13 +50,13 @@ Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard&
     static_cast<float>(window.getSize().y) / endScreenTexture.getSize().y );
     endScreenSprite.setPosition(0, 0);
 
-    scoreText.setFont(font);
+    scoreText.setFont(font1);
     scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::Black);
     scoreText.setPosition(10, 10);
 
     leaderboardText.setFont(font);
-    leaderboardText.setCharacterSize(20);
+    leaderboardText.setCharacterSize(40);
     leaderboardText.setFillColor(sf::Color::White);
     leaderboardText.setPosition(100, 100);
 }

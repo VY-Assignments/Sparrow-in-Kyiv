@@ -15,7 +15,7 @@ Button::Button(const std::string& label, const sf::Vector2f& position)
     sprite.setScale(200.f / texture.getSize().x, 80.f / texture.getSize().y);
     sprite.setPosition(position);
 
-    if (!font.loadFromFile("C:/Windows/Fonts/Arial.ttf")) {
+    if (!font.loadFromFile("brushed.ttf")) {
         throw std::runtime_error("Failed to load font");
     }
 

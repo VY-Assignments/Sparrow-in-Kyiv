@@ -6,6 +6,7 @@
 #include "Score.h"
 #include <vector>
 
+#include "PipePool.h"
 
 class LeaderBoard;
 const int maxWidth = 600;
@@ -25,13 +26,12 @@ public:
     Game(LeaderBoard& board);
     void start();
     void update();
-    bool checkCollisions();
     void updateScore();
     void setDifficulty(int level);
     void loadPipes();
     std::vector<Pipe> pipes;
     std::vector<Pipe> currentPipes;
-
+    PipePool pipePool;
     int currentPipeIndex;
     int nextPipeTime;
     int gameTicks;

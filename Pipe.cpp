@@ -9,13 +9,15 @@ Pipe::Pipe(int startX, std::string kind, bool isTop)
 
     if (kind == "green") {
         if (isTop)
-            textureLoaded = texture.loadFromFile("greenPipeTop.png");
+            textureLoaded = texture.loadFromFile("C:/Users/kovko/PycharmProjects/Paradigms_Assignment5/asmt-5-game-engine-koalla05/cmake-build-debug/greenPipeTop.png");
         else
             textureLoaded = texture.loadFromFile("C:/Users/kovko/PycharmProjects/Paradigms_Assignment5/asmt-5-game-engine-koalla05/cmake-build-debug/greenPipe.png");
     }
     else if (kind == "yellow") {
-        textureLoaded = isTop ? texture.loadFromFile("yellowPipeTop.png")
-                              : texture.loadFromFile("yellowPipe.png");
+        if (isTop)
+            textureLoaded = texture.loadFromFile("C:/Users/kovko/PycharmProjects/Paradigms_Assignment5/asmt-5-game-engine-koalla05/cmake-build-debug/yellowPipeTop.png");
+        else
+            textureLoaded = texture.loadFromFile("C:/Users/kovko/PycharmProjects/Paradigms_Assignment5/asmt-5-game-engine-koalla05/cmake-build-debug/yellowPipe.png");
     }
 
     if (!textureLoaded) {
