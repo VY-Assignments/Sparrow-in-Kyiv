@@ -1,49 +1,47 @@
 #include "Bird.h"
 #include "Pipe.h"
-#include <iostream>
-
 #include "Game.h"
 
+void Bird::loadTextures() {
+    std::vector<std::string> textureFiles = {
+        "bird.png",
+        "birdF.png",
+    };
+
+    for (const auto& file : textureFiles) {
+        sf::Texture texture;
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Failed to load texture: " << file << std::endl;
+        } else {
+            textures.push_back(texture);
+        }
+    }
+}
+
+
 void Bird::reset() {
-    x = 10;
-    y = 10;
+    x = 100;
+    y = 100;
+    sprite.setTexture(textures[0]);
+    sprite.setPosition(x, y);
+    speed = 0;
 }
 
 void Bird::flap() {
     speed = lift;
+    //sprite.setTexture(textures[1]);
 }
-bool ::Bird::checkColissions(Pipe &pipe) {
-    float birdRadius = 10;
-    int birdLeft = (x * 10);
-    int birdRight = (x * 10) + 2 * birdRadius;
-    int birdTop = (y * 10);
-    int birdBottom = (y * 10) + 2 * birdRadius;
-
-    // Pipe boundaries
-    int pipeLeft = pipe.x;
-    int pipeRight = pipe.x + pipe.width;
-    int pipeTop = pipe.y;
-    int pipeBottom = pipe.y + pipe.gap;
-    std::cout << pipeLeft << "," << pipeRight << "," << pipeTop << "," << pipeBottom << "," << pipe.gap <<std::endl;
-    std::cout << pipeTop << std::endl;
-    bool horizontalCollisions = birdRight >= pipeLeft && birdLeft <= pipeRight;
-    bool sideCollision = (birdTop <= pipeTop || birdBottom >= pipeBottom);
-
-    if (horizontalCollisions && sideCollision) {
-        std::cout << "Collision detected!" << " Bird: " << birdLeft << "," << birdTop << "," << birdBottom<< " Pipe: " << pipeLeft << "," << pipeTop << " " << pipe.y << std::endl;
-        return true; // Collision detected
-    }
-
-    return false; // No collision
+bool ::Bird::checkCollissions(Pipe &pipe) {
+    return sprite.getGlobalBounds().intersects(pipe.sprite.getGlobalBounds());
 }
 
-bool Bird::checkColisionWithBorders() {
-    if ((y * 10) <= 0 || (y * 10 + 2 * 10) >= maxHeight) {
-         std::cout << "yes" << y;
+bool Bird::checkCollisionWithBorders() {
+    sf::FloatRect birdBounds = sprite.getGlobalBounds();
+    sf::Vector2u windowSize = {600, 800};
+    if (birdBounds.top <= 0 || birdBounds.top + birdBounds.height >= windowSize.y) {
+        return true;
     }
-
-    return (y * 10) <= 0 || (y * 10) >= maxHeight - 10;
-
+    return false;
 }
 
 void ::Bird::updatePosition() {
@@ -51,5 +49,6 @@ void ::Bird::updatePosition() {
     y += speed;
     if (y < 0) y = 0;
     if (y >= maxHeight) y = maxHeight;
+    sprite.setPosition(x, y);
 }
 

@@ -1,12 +1,19 @@
 #pragma once
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
 class Pipe {
+
+
 public:
-    int height;
-    int width = 50;
-    int gap;
-    int x;
-    int y;
-    Pipe(int startX, int startY, int pipeGap);
+    bool isTop;
+    sf::Texture texture;
+    sf::Sprite sprite;
+    Pipe(int startX, std::string kind, bool isTop);
     void updatePosition();
     bool isOffScreen();
+    int getY() const { return y; }
+    int x, y;
+    std::string kind;
+    bool scored = false;
 };

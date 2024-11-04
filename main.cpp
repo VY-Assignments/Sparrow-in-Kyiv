@@ -15,6 +15,8 @@ int main() {
 
     Game game(board);
     EndScreen screen(currentState);
+    bool scoreSubmitted = false;
+    bool gameStarted = false;
 
     while (renderer.isOpen()) {
         sf::Event event;
@@ -25,18 +27,36 @@ int main() {
             }
             switch (currentState) {
                 case GameState::Menu:
-                    renderer.renderMenu(menu.buttons);
-                    renderer.handleEventsMenu(event, menu.buttons);
+                    renderer.renderMenu(menu.buttons, menu.nameField);
+                    renderer.handleEventsMenu(event, menu.buttons, menu.nameField);
                     break;
                 case GameState::LeaderBoard:
                     renderer.renderLeaderboard(board);
                     renderer.handleEventsLeaderBoard(event, board.button);
                     break;
                 case GameState::Game:
+                    scoreSubmitted = false;
                     if (!game.gameRunning) {
                         renderer.clear();
                         game.start();
+
+                        while (!gameStarted && renderer.isOpen()) {
+                            while (renderer.pollEvent(event)) {
+                                if (event.type == sf::Event::Closed) {
+                                    renderer.close();
+                                    game.gameRunning = false;
+                                    return 0;
+                                }
+                                if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space) {
+                                    gameStarted = true;
+                                    break;
+                                }
+                            }
+                            renderer.clear();
+                            renderer.renderStartScreen();
+                        }
                     }
+
                     while (game.gameRunning) {
                         while (renderer.pollEvent(event)) {
                             renderer.handeEventsGame(event, game.bird);
@@ -51,6 +71,11 @@ int main() {
                     currentState = GameState::EndScreen;
                     break;
                 case GameState::EndScreen: {
+                    gameStarted = false;
+                    if (!scoreSubmitted) {
+                        board.add(menu.nameField.getText(), game.score.getScore());
+                        scoreSubmitted = true;
+                    }
                     renderer.handleEventsEndScreen(event, screen.buttons);
                     renderer.renderEndScreen(game.score, screen.buttons);
                 }

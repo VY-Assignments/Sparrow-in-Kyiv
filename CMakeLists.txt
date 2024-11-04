@@ -26,6 +26,7 @@ add_executable(asmt-5-game-engine-koalla05
         Leaderboard.cpp
         Renderer.h
         Renderer.cpp
+        TextField.h
 )
 
 target_link_libraries(asmt-5-game-engine-koalla05 sfml-graphics sfml-window sfml-system)

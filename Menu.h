@@ -2,6 +2,8 @@
 #include "Button.h"
 #include <vector>
 
+#include "TextField.h"
+
 enum class GameState {
     Menu,
     LeaderBoard,
@@ -12,13 +14,13 @@ enum class GameState {
 class Menu {
 public:
     GameState& state;
-    int& difficulty;
     std::vector<Button*> buttons;
-    Menu(int& level, GameState& state):difficulty(level), state(state) {
-        buttons.push_back(new DifficultyButton("Easy", {200, 50}, {100, 100}, level, state));
-        buttons.push_back(new DifficultyButton("Medium", {200, 50}, {100, 160}, level, state));
-        buttons.push_back(new DifficultyButton("Hard", {200, 50}, {100, 220}, level, state));
-        buttons.push_back(new LeaderBoardButton("Leaderboard", {200, 50}, {100, 280}, state));
+    TextField nameField;
+    Menu(int& level, GameState& state): state(state), nameField({200, 50}, {100, 500}) {
+        buttons.push_back(new DifficultyButton("Easy", {100, 100}, level, state));
+        buttons.push_back(new DifficultyButton("Medium", {100, 160}, level, state));
+        buttons.push_back(new DifficultyButton("Hard", {100, 220}, level, state));
+        buttons.push_back(new LeaderBoardButton("Leaderboard", {100, 280}, state));
     }
     ~Menu() {
         for (Button* button : buttons) {

@@ -1,9 +1,46 @@
 #include "Pipe.h"
 
-Pipe::Pipe(int startX, int startY, int pipeGap) : x(startX), y(startY), gap(pipeGap) {}
+#include <iostream>
+
+Pipe::Pipe(int startX, std::string kind, bool isTop)
+    : x(startX), kind(kind), isTop(isTop) {
+
+    bool textureLoaded = false;
+
+    if (kind == "green") {
+        if (isTop)
+            textureLoaded = texture.loadFromFile("greenPipeTop.png");
+        else
+            textureLoaded = texture.loadFromFile("C:/Users/kovko/PycharmProjects/Paradigms_Assignment5/asmt-5-game-engine-koalla05/cmake-build-debug/greenPipe.png");
+    }
+    else if (kind == "yellow") {
+        textureLoaded = isTop ? texture.loadFromFile("yellowPipeTop.png")
+                              : texture.loadFromFile("yellowPipe.png");
+    }
+
+    if (!textureLoaded) {
+        std::cerr << "No texture loaded for " << kind << (isTop ? " top" : " bottom") << " pipe." << std::endl;
+        return;
+    }
+
+    sprite.setTexture(texture);
+    sprite.setScale(100.0f / texture.getSize().x, 250.0f / texture.getSize().y);
+
+    if (isTop) {
+        y = 0;
+    } else {
+        y = 800 - sprite.getGlobalBounds().height;
+    }
+
+    sprite.setPosition(x, y);
+}
+
+
 void Pipe::updatePosition() {
     x -= 1;
+    sprite.setPosition(x, y);
 }
+
 bool Pipe::isOffScreen() {
-    return x + width < 0;
+    return x + sprite.getGlobalBounds().width < 0;
 }

@@ -1,68 +1,82 @@
 #include "Game.h"
-#include <iostream>
-#include <chrono>
-#include <iostream>
 #include <thread>
 #include "EndScreen.h"
 
-Game::Game(LeaderBoard& inBoard): difficulty(0), board(inBoard), bird(Bird(10, 10)) {}
+Game::Game(LeaderBoard& inBoard): difficulty(0), board(inBoard), bird(Bird()) {}
 
-std::string Game::getName() {
-    std::string name;
-    //std::cout << "Enter your name: ";
-    //std::cin >> name;
-    name = "Alla";
-    return name;
+void Game::loadPipes() {
+
+    pipesEasy.emplace_back(600, "green", false); // Bottom green
+    pipesEasy.emplace_back(600, "green", true); // Top green
+    // pipesEasy.emplace_back(800, "yellow", false); // Bottom yellow
+    // pipesEasy.emplace_back(800, "yellow", true); // Top yellow
 }
+
 
 void Game::start() {
     bird.reset();
     pipes.clear();
     score.reset();
+    currentPipeIndex = 0;
+    nextPipeTime = 0;
+    gameTicks = 0;
     gameRunning = true;
-    std::string name = getName();
+    loadPipes();
+    currentPipes = pipesEasy;
 }
 void Game::update() {
     bird.updatePosition();
+
+    if (gameTicks >= nextPipeTime) {
+        if (currentPipeIndex >= currentPipes.size()) {
+            currentPipeIndex = 0;
+        }
+        if (!currentPipes.empty() && currentPipeIndex + 1 < currentPipes.size()) {
+            Pipe& bottomPipe = currentPipes[currentPipeIndex];
+            Pipe& topPipe = currentPipes[currentPipeIndex + 1];
+            std::cout << bottomPipe.kind << " " << bottomPipe.isTop << std::endl;
+            std::cout << topPipe.kind << " " << topPipe.isTop << std::endl;
+
+            pipes.emplace_back(bottomPipe);
+            pipes.emplace_back(topPipe);
+            std::cout << "Pipes added: " << pipes.size() << std::endl;
+
+            currentPipeIndex += 2;
+            nextPipeTime += 200;
+        }
+
+
+    }
+
+    if (bird.checkCollisionWithBorders()) {
+        gameRunning = false;
+        return;
+    }
+
     for (auto it = pipes.begin(); it != pipes.end();) {
-        it -> updatePosition();
+        it->updatePosition();
+
+        if (bird.checkCollissions(*it)) {
+            gameRunning = false;
+            return;
+        }
+        if (!it->isTop && !it->scored && bird.sprite.getGlobalBounds().width > it->x + it->sprite.getGlobalBounds().width) {
+            updateScore();
+            it->scored = true;
+        }
         if (it->isOffScreen()) {
             it = pipes.erase(it);
+            std::cout << "Erase, remaining pipes: " << pipes.size() << std::endl;
         } else {
             ++it;
         }
     }
-    if (checkCollisions()) {
-        gameRunning = false;
-    }
-    else {
-        if (!pipes.empty() && bird.x + 20 == pipes.front().x + 1) {
-            updateScore();
-        }
-    }
-    if (pipes.empty()) {
-        int pipeGap = 250 + rand() % 101;
-        int pipeY = rand() % (maxHeight - 350);
-        pipes.emplace_back(maxWidth / 2 - 1, pipeY, pipeGap);
-    }
-    if (pipes.back().x <= maxWidth - 100) {
-            int pipeGap = 250 + rand() % 101;
-            int pipeY = rand() % (maxHeight - 350);
 
-            pipes.emplace_back(maxWidth - 1, pipeY, pipeGap);
+    std::cout << "After loop, pipes size: " << pipes.size() << std::endl;
 
-            pipeSpawnCounter = 0;
-    }
-};
-bool Game::checkCollisions() {
-    for (auto& pipe: pipes) {
-        if (bird.checkColissions(pipe)) {
-            return true;
-        }
-    }
-    if (bird.checkColisionWithBorders()) return true;
-    return false;
+    gameTicks++;
 }
+
 void Game::updateScore() {
     score.increaseScore();
 }
@@ -70,10 +84,3 @@ void Game::updateScore() {
 void Game::setDifficulty(int level) {
     difficulty = level;
 }
-void Game::showMenu() {
-    // Menu menu;
-    // menu.viewScoreBoard(board);
-    // setDifficulty(menu.chooseDifficulty());
-    // start();
-}
-
