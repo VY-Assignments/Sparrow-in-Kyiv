@@ -1,5 +1,4 @@
-#include <iostream>
-
+#include "EndScreen.h"
 #include "Game.h"
 #include "Menu.h"
 #include "Leaderboard.h"
@@ -12,15 +11,17 @@ int main() {
     int difficulty = 0;
     LeaderBoard board(currentState);
     Menu menu(difficulty, currentState);
-    Renderer renderer(700, 900, title, board);
-    Game game(board);
+    Renderer renderer(600, 800, title, board);
 
+    Game game(board);
+    EndScreen screen(currentState);
 
     while (renderer.isOpen()) {
         sf::Event event;
         while (renderer.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 renderer.close();
+                game.gameRunning = false;
             }
             switch (currentState) {
                 case GameState::Menu:
@@ -32,13 +33,27 @@ int main() {
                     renderer.handleEventsLeaderBoard(event, board.button);
                     break;
                 case GameState::Game:
-                    renderer.renderGame(game.bird, game.pipes, game.score);
-                    renderer.handeEventsGame(event, game.bird);
                     if (!game.gameRunning) {
-                        game.setDifficulty(difficulty);
+                        renderer.clear();
+                        game.start();
                     }
-                    game.gameLoop();
+                    while (game.gameRunning) {
+                        while (renderer.pollEvent(event)) {
+                            renderer.handeEventsGame(event, game.bird);
+                            if (event.type == sf::Event::Closed) {
+                                renderer.close();
+                                game.gameRunning = false;
+                            }
+                        }
+                        game.update();
+                        renderer.renderGame(game.bird, game.pipes, game.score);
+                    }
+                    currentState = GameState::EndScreen;
                     break;
+                case GameState::EndScreen: {
+                    renderer.handleEventsEndScreen(event, screen.buttons);
+                    renderer.renderEndScreen(game.score, screen.buttons);
+                }
             }
         }
     }

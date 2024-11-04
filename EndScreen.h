@@ -1,8 +1,19 @@
 #pragma once
-#include "Score.h"
+#include <vector>
+
+#include "Button.h"
+
+
+enum class GameState;
 
 class EndScreen {
-    Score score;
+    GameState& state;
 public:
-    char show();
+    std::vector<Button*> buttons;
+    EndScreen(GameState& state): state(state) {
+        buttons.push_back(new MenuButton("Menu", {200, 50}, {100, 100},  state));
+        buttons.push_back(new RestartButton("Restart", {200, 50}, {100, 160},  state));
+        buttons.push_back(new EndButton("Exit", {200, 50}, {100, 220}, state));
+
+    }
 };

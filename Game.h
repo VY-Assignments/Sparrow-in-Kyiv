@@ -7,8 +7,8 @@
 #include <vector>
 
 class LeaderBoard;
-const int maxWidth = 40;
-const int maxHeight = 20;
+const int maxWidth = 600;
+const int maxHeight = 800;
 
 class Game {
 
@@ -17,13 +17,14 @@ class Game {
     int pipeSpawnCounter = 0;
     LeaderBoard& board;
 public:
-    bool gameRunning = true;
+    bool gameRunning = false;
     Bird bird;
     std::vector<Pipe> pipes;
     Score score;
     Game(LeaderBoard& board);
-    void gameLoop();
-    void update(float deltaTime);
+    void start();
+    //void gameLoop();
+    void update();
     bool checkCollisions();
     void updateScore();
     void setDifficulty(int level);

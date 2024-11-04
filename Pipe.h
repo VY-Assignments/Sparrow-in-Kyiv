@@ -2,11 +2,11 @@
 class Pipe {
 public:
     int height;
-    int width;
+    int width = 50;
     int gap;
     int x;
     int y;
     Pipe(int startX, int startY, int pipeGap);
-    void updatePosition(float deltaTime);
+    void updatePosition();
     bool isOffScreen();
 };

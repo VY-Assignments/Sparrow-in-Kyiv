@@ -58,3 +58,20 @@ void BackButton::onClick() {
     std::cout << "yes";
     state = GameState::Menu;
 }
+
+MenuButton::MenuButton(const std::string &label, const sf::Vector2f &size, const sf::Vector2f &position, GameState &state): Button(label, size, position), state(state) {}
+
+void MenuButton::onClick() {
+    state = GameState::Menu;
+}
+RestartButton::RestartButton(const std::string &label, const sf::Vector2f &size, const sf::Vector2f &position, GameState &state): Button(label, size, position), state(state) {}
+
+void RestartButton::onClick() {
+    state = GameState::Game;
+}
+
+EndButton::EndButton(const std::string &label, const sf::Vector2f &size, const sf::Vector2f &position, GameState &state): Button(label, size, position), state(state) {}
+
+void EndButton::onClick() {
+    exit(0);
+}

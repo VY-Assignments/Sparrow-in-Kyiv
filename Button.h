@@ -40,3 +40,24 @@ public:
     DifficultyButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, int& difficulty, GameState& state);
     void onClick() override;
 };
+
+class MenuButton: public Button {
+    GameState& state;
+public:
+    MenuButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state);
+    void onClick() override;
+};
+
+class RestartButton: public Button {
+    GameState& state;
+public:
+    RestartButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state);
+    void onClick() override;
+};
+
+class EndButton: public Button {
+    GameState& state;
+public:
+    EndButton(const std::string& label, const sf::Vector2f& size, const sf::Vector2f& position, GameState& state);
+    void onClick() override;
+};
