@@ -2,8 +2,8 @@
 #include <thread>
 #include "EndScreen.h"
 
-Game::Game(LeaderBoard& inBoard)
-    : difficulty(0), board(inBoard), bird(Bird()), pipePool(10) {
+Game::Game()
+    : difficulty(0), bird(Bird()), pipePool(10) {
 }
 void Game::start() {
     bird.reset();
@@ -18,6 +18,7 @@ void Game::start() {
 
 void Game::update() {
     bird.updatePosition();
+
 
     for (auto it = pipes.begin(); it != pipes.end();) {
         it->updatePosition();

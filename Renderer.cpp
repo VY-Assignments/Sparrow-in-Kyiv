@@ -37,6 +37,11 @@ Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard&
     if (!startScreenTexture.loadFromFile("startScreen.png")) {
         std::cerr << "Failed to load background image" << std::endl;
     }
+    startScreenText.setFont(font1);
+    startScreenText.setCharacterSize(40);
+    startScreenText.setPosition(130, 320);
+    startScreenText.setString("Please, press SPACE\n    to start");
+    startScreenText.setColor(sf::Color::Black);
     startScreenSprite.setTexture(startScreenTexture);
     startScreenSprite.setScale(static_cast<float>(window.getSize().x) / startScreenTexture.getSize().x,
     static_cast<float>(window.getSize().y) / startScreenTexture.getSize().y );
@@ -50,10 +55,15 @@ Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard&
     static_cast<float>(window.getSize().y) / endScreenTexture.getSize().y );
     endScreenSprite.setPosition(0, 0);
 
-    scoreText.setFont(font1);
-    scoreText.setCharacterSize(24);
-    scoreText.setFillColor(sf::Color::Black);
-    scoreText.setPosition(10, 10);
+    scoreTextGame.setFont(font1);
+    scoreTextGame.setCharacterSize(24);
+    scoreTextGame.setFillColor(sf::Color::Black);
+    scoreTextGame.setPosition(10, 10);
+
+    scoreTextEnd.setFont(font1);
+    scoreTextEnd.setCharacterSize(73);
+    scoreTextEnd.setColor(sf::Color::Black);
+    scoreTextEnd.setPosition(110, 210);
 
     leaderboardText.setFont(font);
     leaderboardText.setCharacterSize(40);
@@ -142,10 +152,12 @@ void Renderer::renderLeaderboard(LeaderBoard& board) {
     window.display();
 }
 
-void Renderer::renderEndScreen(Score& score, std::vector<Button*> buttons) {
+void Renderer::renderEndScreen(int score, std::vector<Button*> buttons) {
     clear();
     window.draw(endScreenSprite);
-    window.draw(scoreText);
+    std::string strScore = std::to_string(score);
+    scoreTextEnd.setString("Your score:\n\n     " + strScore);
+    window.draw(scoreTextEnd);
     for (Button* button : buttons) {
         button->draw(window);
     }
@@ -167,19 +179,21 @@ void Renderer::close() {
 void Renderer::renderGame(Bird& bird, std::vector<Pipe>& pipes, Score& score) {
     clear();
     window.draw(gameSprite);
+    bird.setSprite();
     window.draw(bird.sprite);
 
     for (auto& pipe : pipes) {
         window.draw(pipe.sprite);
     }
 
-    scoreText.setString("Score: " + std::to_string(score.getScore()));
-    window.draw(scoreText);
+    scoreTextGame.setString("Score: " + std::to_string(score.getScore()));
+    window.draw(scoreTextGame);
     window.display();
 }
 
 void Renderer::renderStartScreen() {
     clear();
     window.draw(startScreenSprite);
+    window.draw(startScreenText);
     window.display();
 }

@@ -13,7 +13,7 @@ int main() {
     Menu menu(difficulty, currentState);
     Renderer renderer(600, 800, title, board);
 
-    Game game(board);
+    Game game;
     EndScreen screen(currentState);
     bool scoreSubmitted = false;
     bool gameStarted = false;
@@ -77,7 +77,7 @@ int main() {
                         scoreSubmitted = true;
                     }
                     renderer.handleEventsEndScreen(event, screen.buttons);
-                    renderer.renderEndScreen(game.score, screen.buttons);
+                    renderer.renderEndScreen(game.score.getScore(), screen.buttons);
                 }
             }
         }

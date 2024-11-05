@@ -24,6 +24,7 @@ class Renderer {
 
     sf::Texture startScreenTexture;
     sf::Sprite startScreenSprite;
+    sf::Text startScreenText;
 
     sf::Texture gameTexture;
     sf::Sprite gameSprite;
@@ -31,7 +32,8 @@ class Renderer {
     sf::Texture endScreenTexture;
     sf::Sprite endScreenSprite;
 
-    sf::Text scoreText;
+    sf::Text scoreTextGame;
+    sf::Text scoreTextEnd;
     sf::Text leaderboardText;
 
 
@@ -47,7 +49,7 @@ public:
     void renderMenu(std::vector<Button*> buttons, TextField& namePlace);
     void renderLeaderboard(LeaderBoard& board);
     void renderGame(Bird& bird, std::vector<Pipe>& pipes, Score& score);
-    void renderEndScreen(Score& score, std::vector<Button*> buttons);
+    void renderEndScreen(int score, std::vector<Button*> buttons);
     void handleEventsEndScreen(const sf::Event& event, std::vector<Button*> buttons);
     void renderStartScreen();
 

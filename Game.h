@@ -15,7 +15,6 @@ const int maxHeight = 800;
 class Game {
     int difficulty;
     int pipeSpawnCounter = 0;
-    LeaderBoard& board;
 public:
     bool gameRunning = false;
     Bird bird;
@@ -23,12 +22,11 @@ public:
     std::vector<Pipe> pipesMedium;
     std::vector<Pipe> pipesHard;
     Score score;
-    Game(LeaderBoard& board);
+    Game();
     void start();
     void update();
     void updateScore();
     void setDifficulty(int level);
-    void loadPipes();
     std::vector<Pipe> pipes;
     std::vector<Pipe> currentPipes;
     PipePool pipePool;

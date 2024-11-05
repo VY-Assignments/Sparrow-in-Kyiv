@@ -11,8 +11,8 @@ class EndScreen {
 public:
     std::vector<Button*> buttons;
     EndScreen(GameState& state): state(state) {
-        buttons.push_back(new MenuButton("Menu", {100, 100},  state));
-        buttons.push_back(new RestartButton("Restart", {100, 160},  state));
-        buttons.push_back(new EndButton("Exit", {100, 220}, state));
+        buttons.push_back(new MenuButton("Menu", {60, 565},  state));
+        buttons.push_back(new RestartButton("Restart", {340, 75},  state));
+        buttons.push_back(new EndButton("Exit", {60, 670}, state));
     }
 };

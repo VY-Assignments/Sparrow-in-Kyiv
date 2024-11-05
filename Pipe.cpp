@@ -26,7 +26,8 @@ Pipe::Pipe(int startX, std::string kind, bool isTop)
     }
 
     sprite.setTexture(texture);
-    sprite.setScale(100.0f / texture.getSize().x, 250.0f / texture.getSize().y);
+    if (kind == "green") sprite.setScale(100.0f / texture.getSize().x, 250.0f / texture.getSize().y);
+    else if (kind == "yellow") sprite.setScale(100.0f / texture.getSize().x, 150.0f / texture.getSize().y);
 
     if (isTop) {
         y = 0;

@@ -24,6 +24,8 @@ void LeaderBoard::getScoreByName(std::string name) {
 }
 
 void LeaderBoard::add(std::string name, int score) {
+    if (name == "") name = "Noname";
+    if (scores.empty())loadScores();
     if (scores.find(name) == scores.end() || score > scores[name]) {
         scores[name] = score;
     }
@@ -43,6 +45,7 @@ void LeaderBoard::loadScores() {
         scores[name] = score;
     }
 }
+
 
 
 
