@@ -5,11 +5,17 @@
 
 class PipePool {
 public:
-    PipePool(size_t poolSize);
+    PipePool();
+    void chooseLevel(int level);
     Pipe& getPipe();
     void resetPipe(Pipe& pipe);
-
+    void reset();
 private:
-    std::vector<Pipe> pool;
-    size_t currentIndex;
+    int diff = 0;
+    std::vector<Pipe>* pool{};
+    std::vector<Pipe> pool1;
+    std::vector<Pipe> pool2;
+    std::vector<Pipe> pool3;
+    std::vector<Pipe> pool4;
+    size_t currentIndex = 0;
 };

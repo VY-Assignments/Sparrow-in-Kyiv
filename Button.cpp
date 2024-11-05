@@ -41,7 +41,6 @@ void DifficultyButton::onClick() {
     state = GameState::Game;
     if (label == "Easy") {
         difficulty = 1;
-        std::cout << "yes";
     }
     else if (label == "Medium") {
         difficulty = 2;

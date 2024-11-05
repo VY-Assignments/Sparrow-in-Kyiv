@@ -38,6 +38,7 @@ int main() {
                     scoreSubmitted = false;
                     if (!game.gameRunning) {
                         renderer.clear();
+                        game.setDifficulty(difficulty);
                         game.start();
 
                         while (!gameStarted && renderer.isOpen()) {

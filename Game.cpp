@@ -1,9 +1,7 @@
 #include "Game.h"
-#include <thread>
-#include "EndScreen.h"
 
 Game::Game()
-    : difficulty(0), bird(Bird()), pipePool(10) {
+    : difficulty(0), bird(Bird()) {
 }
 void Game::start() {
     bird.reset();
@@ -13,12 +11,12 @@ void Game::start() {
     nextPipeTime = 0;
     gameTicks = 0;
     gameRunning = true;
-    currentPipes = pipesEasy;
+    pipePool.reset();
+    pipePool.chooseLevel(difficulty);
 }
 
 void Game::update() {
     bird.updatePosition();
-
 
     for (auto it = pipes.begin(); it != pipes.end();) {
         it->updatePosition();
@@ -66,4 +64,8 @@ void Game::updateScore() {
 
 void Game::setDifficulty(int level) {
     difficulty = level;
+}
+
+void Game::setPool(PipePool& pipepool) {
+    pipePool = pipepool;
 }
