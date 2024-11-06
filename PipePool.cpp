@@ -36,94 +36,100 @@ PipePool::PipePool() {
 Pipe& PipePool::getPipe() {
     switch (diff) {
         case 1:
+            if (currentIndex % 2 == 1) currentIndex = (std::rand() % 5) * 2;
+            else currentIndex++;
             switch (currentIndex) {
                 case 0:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe17);
                 case 1:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe18);
                 case 2:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe19);
                 case 3:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe20);
                 case 4:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe21);
                 case 5:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe22);
                 case 6:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe23);
                 case 7:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex);
                 return (*pipe24);
                 case 8:
-                    currentIndex = (currentIndex + 1) % 10;
+                    currentIndex = (currentIndex) ;
                 return (*pipe25);
                 case 9:
-                    currentIndex = (currentIndex + 1) % 10; // number of different pipes (top and bottom separately)
+                    currentIndex = (currentIndex) ; // number of different pipes (top and bottom separately)
                 return (*pipe26);
             }
         break;
 
         case 2:
+            if (currentIndex % 2 == 1) currentIndex = (std::rand() % 4) * 2;
+            else currentIndex++;
             switch (currentIndex) {
                 case 0:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe9);
                 case 1:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe10);
                 case 2:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe11);
                 case 3:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe12);
                 case 4:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe13);
                 case 5:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe14);
                 case 6:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe15);
                 case 7:
-                    currentIndex = (currentIndex + 1) % 8; // number of different pipes (top and bottom separately)
+                    currentIndex = (currentIndex); // number of different pipes (top and bottom separately)
                 return (*pipe16);
             }
         break;
 
         case 3:
+            if (currentIndex % 2 == 1) currentIndex = (std::rand() % 4) * 2;
+            else currentIndex++;
             switch (currentIndex) {
                 case 0:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe1);
                 case 1:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe2);
                 case 2:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe3);
                 case 3:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe4);
                 case 4:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe5);
                 case 5:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe6);
                 case 6:
-                    currentIndex = (currentIndex + 1) % 8;
+                    currentIndex = (currentIndex);
                 return (*pipe7);
                 case 7:
-                    currentIndex = (currentIndex + 1) % 8; // number of different pipes (top and bottom separately)
+                    currentIndex = (currentIndex); // number of different pipes (top and bottom separately)
                 return (*pipe8);
             }
     }

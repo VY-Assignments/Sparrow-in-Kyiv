@@ -39,5 +39,5 @@ private:
     Pipe* pipe24;
     Pipe* pipe25;
     Pipe* pipe26;
-    size_t currentIndex = 0;
+    size_t currentIndex = 1;
 };
