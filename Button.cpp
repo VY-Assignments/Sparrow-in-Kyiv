@@ -62,7 +62,6 @@ BackButton::BackButton(const std::string& label, const sf::Vector2f& position, G
     : Button(label, position), state(state) {}
 
 void BackButton::onClick() {
-    std::cout << "yes";
     state = GameState::Menu;
 }
 

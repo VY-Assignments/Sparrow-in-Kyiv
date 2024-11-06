@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-LeaderBoard::LeaderBoard(GameState& state) : isDisplayed(false), state(state), button("Back", {100, 500}, state) {
+LeaderBoard::LeaderBoard(GameState& state) : isDisplayed(false), state(state), button("Back", {200, 670}, state) {
 }
 
 std::vector<std::pair<std::string, int>> LeaderBoard::display() {
@@ -15,6 +15,10 @@ std::vector<std::pair<std::string, int>> LeaderBoard::display() {
     std::sort(bestScores.begin(), bestScores.end(), [](const auto& a, const auto& b) {
         return a.second > b.second;
     });
+
+    if (bestScores.size() > 10) {
+        bestScores.resize(10);
+    }
 
     return bestScores;
 }

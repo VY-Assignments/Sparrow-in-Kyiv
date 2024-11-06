@@ -35,6 +35,7 @@ class Renderer {
     sf::Text scoreTextGame;
     sf::Text scoreTextEnd;
     sf::Text leaderboardText;
+    sf::Text leaderboardTextH;
 
 
 public:

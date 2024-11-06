@@ -9,11 +9,12 @@ public:
     bool isTop;
     sf::Texture texture;
     sf::Sprite sprite;
-    Pipe(int startX, std::string kind, bool isTop);
+    Pipe(std::string kind, bool isTop);
+    std::vector<sf::FloatRect> getPipeHitboxes();
     void updatePosition();
     bool isOffScreen();
-    int getY() const { return y; }
-    int x, y;
+    int x = 600;
+    int y;
     std::string kind;
     bool scored = false;
 };

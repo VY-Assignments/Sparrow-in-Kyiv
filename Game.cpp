@@ -1,4 +1,43 @@
 #include "Game.h"
+sf::Color getPixelColor(const sf::Image& image, const sf::Sprite& sprite, int x, int y) {
+    // Calculate local coordinates on the sprite
+    int localX = x - sprite.getGlobalBounds().left;
+    int localY = y - sprite.getGlobalBounds().top;
+
+    // Adjust for sprite scaling
+    localX /= sprite.getScale().x;
+    localY /= sprite.getScale().y;
+
+    return image.getPixel(localX, localY);
+}
+
+bool pixelPerfectCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2) {
+    sf::FloatRect intersection;
+
+    // Check if bounding boxes intersect
+    if (!sprite1.getGlobalBounds().intersects(sprite2.getGlobalBounds(), intersection)) {
+        return false;
+    }
+
+    // Retrieve images from textures
+    const sf::Image& image1 = sprite1.getTexture()->copyToImage();
+    const sf::Image& image2 = sprite2.getTexture()->copyToImage();
+
+    // Loop through the intersecting rectangle
+    for (int x = intersection.left; x < intersection.left + intersection.width; ++x) {
+        for (int y = intersection.top; y < intersection.top + intersection.height; ++y) {
+            // Check if both pixels are non-transparent
+            if (getPixelColor(image1, sprite1, x, y).a > 0 &&
+                getPixelColor(image2, sprite2, x, y).a > 0) {
+                return true;
+                }
+        }
+    }
+
+    return false;
+}
+
+
 
 Game::Game()
     : difficulty(0), bird(Bird()) {
@@ -21,7 +60,8 @@ void Game::update() {
     for (auto it = pipes.begin(); it != pipes.end();) {
         it->updatePosition();
 
-        if (bird.checkCollissions(*it)) {
+        // if (bird.checkCollissions(*it)) {
+        if (pixelPerfectCollision(bird.sprite, (*it).sprite)){
             gameRunning = false;
             return;
         }
@@ -47,8 +87,8 @@ void Game::update() {
         pipes.emplace_back(bottomPipe);
         pipes.emplace_back(topPipe);
 
-        nextPipeTime += 200;
-
+        int randomOffset = 10 + (std::rand() % 251);
+        nextPipeTime += bottomPipe.sprite.getGlobalBounds().width + randomOffset;
     }
 
     if (bird.checkCollisionWithBorders()) {

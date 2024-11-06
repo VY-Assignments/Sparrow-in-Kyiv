@@ -2,7 +2,7 @@
 #include <iostream>
 
 Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard& board): window(sf::VideoMode(width, height), title), board(board){
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(70);
     if (!font.loadFromFile("alphabetized cassette tapes.ttf")) {
         throw std::runtime_error("Failed to load font");
     }
@@ -68,7 +68,12 @@ Renderer::Renderer(int width, int height, const std::string& title, LeaderBoard&
     leaderboardText.setFont(font);
     leaderboardText.setCharacterSize(40);
     leaderboardText.setFillColor(sf::Color::White);
-    leaderboardText.setPosition(100, 100);
+
+    leaderboardTextH.setString("Our leaders:");
+    leaderboardTextH.setFont(font1);
+    leaderboardTextH.setColor(sf::Color::White);
+    leaderboardTextH.setCharacterSize(60);
+    leaderboardTextH.setPosition(130, 60);
 }
 
 Renderer::~Renderer() {
@@ -138,14 +143,13 @@ void Renderer::renderMenu(std::vector<Button*> buttons, TextField& namePlace) {
 void Renderer::renderLeaderboard(LeaderBoard& board) {
     clear();
     window.draw(boardSprite);
+    window.draw(leaderboardTextH);
     std::vector<std::pair<std::string, int>> scores = board.display();
     for (size_t i = 0; i < scores.size(); ++i) {
         const auto& playerName = scores[i].first;
         int score = scores[i].second;
         leaderboardText.setString(playerName + ": " + std::to_string(score));
-        leaderboardText.setCharacterSize(24);
-        leaderboardText.setFillColor(sf::Color::Black);
-        leaderboardText.setPosition(100, 50 + i * 30);
+        leaderboardText.setPosition(200, 160 + i * 50);
         window.draw(leaderboardText);
     }
     board.button.draw(window);
