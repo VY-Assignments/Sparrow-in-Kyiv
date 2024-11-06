@@ -1,4 +1,7 @@
 #include "Bird.h"
+
+#include <iostream>
+
 #include "Pipe.h"
 #include "Game.h"
 
@@ -42,9 +45,6 @@ void Bird::reset() {
 void Bird::flap() {
     speed = lift;
 }
-// bool ::Bird::checkCollissions(Pipe &pipe) {
-//     // return sprite.getGlobalBounds().intersects(pipe.sprite.getGlobalBounds());
-// }
 
 
 sf::Color Bird::getPixelColor(const sf::Image& image, const sf::Sprite& sprite, int x, int y) {

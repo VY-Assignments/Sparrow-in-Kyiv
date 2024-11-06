@@ -2,8 +2,7 @@
 
 #include <iostream>
 
-Pipe::Pipe(std::string kind, bool isTop)
-    : kind(kind), isTop(isTop) {
+Pipe::Pipe(std::string kind, bool isTop): kind(kind), isTop(isTop) {
 
     bool textureLoaded;
 
@@ -47,30 +46,7 @@ void Pipe::updatePosition() {
     sprite.setPosition(x, y);
 }
 
-bool Pipe::isOffScreen() {
+bool Pipe::isOffScreen() const {
     return x + sprite.getGlobalBounds().width < 0;
 }
 
-std::vector<sf::FloatRect> Pipe::getPipeHitboxes() {
-    std::vector<sf::FloatRect> hitboxes;
-    sf::FloatRect bounds = sprite.getGlobalBounds();
-
-    float halfWidth = bounds.width / 2;
-    float halfHeight = bounds.height / 2;
-
-    float thirdWidth = bounds.width / 3;
-    float thirdHeight = bounds.height / 3;
-
-    for (int row = 0; row < 3; ++row) {
-        for (int col = 0; col < 3; ++col) {
-            hitboxes.emplace_back(
-                bounds.left + col * thirdWidth,   // x position
-                bounds.top + row * thirdHeight,   // y position
-                thirdWidth,                       // width
-                thirdHeight                       // height
-            );
-        }
-    }
-
-    return hitboxes;
-}

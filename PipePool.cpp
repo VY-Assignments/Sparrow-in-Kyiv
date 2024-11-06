@@ -3,12 +3,6 @@
 #include <iostream>
 
 PipePool::PipePool() {
-    // pool1.emplace_back(600, "green", false);
-    // pool2.emplace_back(600, "green", true);
-    // pool3.emplace_back(600, "yellow", false);
-    // pool4.emplace_back(600, "yellow", true);
-
-
     pipe1 = new Pipe( "veza", false);
     pipe2 = new Pipe("veza", true);
     pipe3 = new Pipe("flag", false);
@@ -145,8 +139,5 @@ void PipePool::reset() {
 
 void PipePool::chooseLevel(int level) {
     diff = level;
-    // if (level == 1) pool = &pool1;
-    // else if (level == 2) pool = &pool2;
-    // else pool = &pool3;
 }
 

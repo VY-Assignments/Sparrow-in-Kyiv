@@ -19,10 +19,8 @@ add_executable(asmt-5-game-engine-koalla05
         Score.h
         Score.cpp
         Menu.h
-        Menu.cpp
         Leaderboard.h
         EndScreen.h
-        EndScreen.cpp
         Leaderboard.cpp
         Renderer.h
         Renderer.cpp

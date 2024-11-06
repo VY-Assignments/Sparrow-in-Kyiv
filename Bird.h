@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <SFML/Graphics/Texture.hpp>
 
 #include "Pipe.h"
@@ -19,7 +18,6 @@ public:
     Bird();
     void flap();
     void updatePosition();
-    // bool checkCollissions(Pipe& pipe);
     bool checkCollisionWithBorders();
     sf::Color getPixelColor(const sf::Image& image, const sf::Sprite& sprite, int x, int y);
     bool pixelPerfectCollision(const sf::Sprite& sprite2);

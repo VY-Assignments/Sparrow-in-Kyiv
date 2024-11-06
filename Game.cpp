@@ -39,9 +39,7 @@ bool pixelPerfectCollision(const sf::Sprite& sprite1, const sf::Sprite& sprite2)
 
 
 
-Game::Game()
-    : difficulty(0), bird(Bird()) {
-}
+Game::Game(): difficulty(0), bird(Bird()) {}
 void Game::start() {
     bird.reset();
     pipes.clear();
@@ -60,7 +58,6 @@ void Game::update() {
     for (auto it = pipes.begin(); it != pipes.end();) {
         it->updatePosition();
 
-        // if (bird.checkCollissions(*it)) {
         if (pixelPerfectCollision(bird.sprite, (*it).sprite)){
             gameRunning = false;
             return;
