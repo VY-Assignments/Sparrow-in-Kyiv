@@ -132,8 +132,9 @@ void Renderer::handleEventsEndScreen(const sf::Event& event, std::vector<Button*
 void Renderer::renderMenu(std::vector<Button*> buttons, TextField& namePlace) {
     clear();
     window.draw(menuSprite);
-    for (Button* button : buttons) {
-        button->draw(window);
+    for (auto& button : buttons) {
+        window.draw(button->sprite);
+        window.draw(button->text);
     }
     window.draw(namePlace.box);
     window.draw(namePlace.text);
@@ -152,7 +153,8 @@ void Renderer::renderLeaderboard(LeaderBoard& board) {
         leaderboardText.setPosition(200, 160 + i * 50);
         window.draw(leaderboardText);
     }
-    board.button.draw(window);
+    window.draw(board.button.sprite);
+    window.draw(board.button.text);
     window.display();
 }
 
@@ -163,7 +165,8 @@ void Renderer::renderEndScreen(int score, std::vector<Button*> buttons) {
     scoreTextEnd.setString("Your score:\n\n     " + strScore);
     window.draw(scoreTextEnd);
     for (Button* button : buttons) {
-        button->draw(window);
+        window.draw(button->sprite);
+        window.draw(button->text);
     }
     window.display();
 }
@@ -190,7 +193,7 @@ void Renderer::renderGame(Bird& bird, std::vector<Pipe>& pipes, Score& score) {
         window.draw(pipe.sprite);
     }
 
-    scoreTextGame.setString("Score: " + std::to_string(score.getScore()));
+    scoreTextGame.setString("Score: " + std::to_string(score.getIntScore()));
     window.draw(scoreTextGame);
     window.display();
 }

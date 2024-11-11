@@ -5,7 +5,7 @@
 #include <vector>
 #include <utility>
 
-LeaderBoard::LeaderBoard(GameState& state) : isDisplayed(false), state(state), button("Back", {200, 670}, state) {
+LeaderBoard::LeaderBoard(GameState& state) : state(state), button("Back", {200, 670}, state) {
 }
 
 std::vector<std::pair<std::string, int>> LeaderBoard::display() {
@@ -23,9 +23,9 @@ std::vector<std::pair<std::string, int>> LeaderBoard::display() {
     return bestScores;
 }
 
-void LeaderBoard::getScoreByName(std::string name) {
-    std::cout << scores[name] << std::endl;
-}
+// void LeaderBoard::getScoreByName(std::string name) {
+//     std::cout << scores[name] << std::endl;
+// }
 
 void LeaderBoard::add(std::string name, int score) {
     if (name == "") name = "Noname";

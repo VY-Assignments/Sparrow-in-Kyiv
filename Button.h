@@ -6,16 +6,15 @@ enum class GameState;
 class Button {
 protected:
     sf::Font font;
-public:
     std::string label;
     sf::Texture texture;
+public:
     sf::Sprite sprite;
     sf::Text text;
 
     Button(const std::string& label, const sf::Vector2f& position);
     virtual void onClick() = 0;
-    void draw(sf::RenderWindow& window);
-    virtual ~Button() {}
+    virtual ~Button() = default;
 };
 
 class LeaderBoardButton : public Button {

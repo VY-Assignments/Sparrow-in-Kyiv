@@ -5,5 +5,5 @@ class Score {
 public:
     void increaseScore();
     void reset();
-    int getScore();
+    int getIntScore();
 };

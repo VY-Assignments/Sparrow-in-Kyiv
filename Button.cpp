@@ -29,10 +29,10 @@ Button::Button(const std::string& label, const sf::Vector2f& position)
     text.setPosition(position.x + sprite.getGlobalBounds().width / 2, position.y + sprite.getGlobalBounds().height / 2);
 }
 
-void Button::draw(sf::RenderWindow& window) {
-    window.draw(sprite);
-    window.draw(text);
-}
+// void Button::draw(sf::RenderWindow& window) {
+//     window.draw(sprite);
+//     window.draw(text);
+// }
 
 DifficultyButton::DifficultyButton(const std::string& label, const sf::Vector2f& position, int& difficulty, GameState& state)
     : Button(label, position), difficulty(difficulty), state(state) {}
@@ -54,7 +54,6 @@ LeaderBoardButton::LeaderBoardButton(const std::string& label, const sf::Vector2
     : Button(label, position), state(state) {}
 
 void LeaderBoardButton::onClick() {
-    std::cout << "Leaderboard button clicked. isDisplayed set to true." << std::endl;
     state = GameState::LeaderBoard;
 }
 

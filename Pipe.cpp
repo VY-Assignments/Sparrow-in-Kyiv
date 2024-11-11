@@ -19,7 +19,7 @@ Pipe::Pipe(std::string kind, bool isTop): kind(kind), isTop(isTop) {
     sprite.setTexture(texture);
     if (kind == "flag") sprite.setScale(100.0f / texture.getSize().x, 240.0f / texture.getSize().y);
     else if (kind == "mother") sprite.setScale(100.0f / texture.getSize().x, 250.0f / texture.getSize().y);
-    else if (kind == "veza") sprite.setScale(50.0f / texture.getSize().x, 260.0f / texture.getSize().y);
+    else if (kind == "veza") sprite.setScale(90.0f / texture.getSize().x, 260.0f / texture.getSize().y);
     else if (kind == "korona") sprite.setScale(150.0f / texture.getSize().x, 250.0f / texture.getSize().y);
     else if (kind == "lavra") sprite.setScale(300.0f / texture.getSize().x, 200.0f / texture.getSize().y);
     else if (kind == "zoloti") sprite.setScale(250.0f / texture.getSize().x, 140.0f / texture.getSize().y);
@@ -42,7 +42,7 @@ Pipe::Pipe(std::string kind, bool isTop): kind(kind), isTop(isTop) {
 
 
 void Pipe::updatePosition() {
-    x -= 1;
+    x -= 2;
     sprite.setPosition(x, y);
 }
 

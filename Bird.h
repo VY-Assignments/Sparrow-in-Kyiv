@@ -8,8 +8,8 @@ class Bird {
     sf::Texture texture;
     const int gravity = 1;
     const int lift = -13;
-    void loadTextures();
     int tick = 0;
+    void loadTextures();
 public:
     sf::Sprite sprite;
     int speed = 0;

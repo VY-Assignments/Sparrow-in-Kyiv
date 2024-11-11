@@ -8,7 +8,7 @@ void Score::reset() {
     currentScore = 0;
 }
 
-int Score::getScore() {
+int Score::getIntScore() {
     return currentScore;
 }
 

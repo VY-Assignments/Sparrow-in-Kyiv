@@ -99,14 +99,13 @@ void Bird::updatePosition() {
 }
 
 void Bird::setSprite() {
-    if (speed < 13) {
-        if (tick < 7) {
-            sprite.setTexture(textures[2]);
-        }
-        else {
-            sprite.setTexture(textures[0]);
-        }
-    } else {
+    if (speed > 13) {
         sprite.setTexture(textures[1]);
+
+    } else if (tick >= 7) {
+        sprite.setTexture(textures[0]);
+    }
+    else {
+        sprite.setTexture(textures[2]);
     }
 }
